@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Date & time
+{% endblock %}
+
+{% block content %}
+
+    {% include 'navbar.html' %}
+    {# This is a comment from Django HTML #}
+    <h1>¡This is getting harder! (joke)</h1>
+    {% if now %}
+        <p>Current date and time is {{ now }}</p>
+    {% else %}
+        <p> 'now' variable is not being provided</p>
+    {% endif %}
+
+    <p>Current scheme: {{ request.scheme }}</p>
+    <p>BASE_DIR: {{BASE_DIR}}</p>
+
+{% endblock %}
