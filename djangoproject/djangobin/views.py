@@ -53,3 +53,15 @@ def redirect_to(request):
     res = HttpResponse('some data')
     res['content-disposition'] = 'attachment; filename=file.txt;'
     return res
+
+
+# Trabajando con los nuevos modelos
+
+def snippet_details(request, snippet_slug):
+    return HttpResponse('viewing snippet #{0}', snippet_slug)
+
+def trending_snippets(request, language_slug):
+    return HttpResponse('trending {0} snippets'.format(language_slug if language_slug else ""))
+
+def tag_list(request, tag):
+    return HttpResponse('viewing tag #{0}', tag)

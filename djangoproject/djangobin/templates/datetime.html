@@ -1,12 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
 {% block title %}
-    Date & time
+    Date & time - {{ block.super }}
 {% endblock %}
 
 {% block content %}
 
-    {% include 'navbar.html' %}
     {# This is a comment from Django HTML #}
     <h1>¡This is getting harder! (joke)</h1>
     {% if now %}
