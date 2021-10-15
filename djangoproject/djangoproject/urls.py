@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
+from django.conf import settings
+from django.conf.urls.static import static
 
 # Ahora si usamos el reverse() en el shell debemos indicar lo siguiente
 # djangobin:profile \\ djangobin:example
@@ -26,4 +28,4 @@ urlpatterns = [
     path('', include('djangobin.urls')),
     path('exception/', include('exceptions.urls')),
     path('admin/', admin.site.urls),
-]
+] + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
