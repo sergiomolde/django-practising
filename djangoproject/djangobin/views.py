@@ -6,7 +6,7 @@ import json
 
 # Create your views here.
 def index(request):
-    return HttpResponse("<p>Hello Django developers</p>")
+    return render(request, 'index.html')
 
 def today_is(request):
     return render(request, 'datetime.html', {'now': datetime.datetime.now(),

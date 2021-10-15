@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'reversion',
     'exceptions.apps.ExceptionsConfig',
     'djangobin.apps.DjangobinConfig',
     'django.contrib.admin',
