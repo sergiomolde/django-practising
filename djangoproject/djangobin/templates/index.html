@@ -10,10 +10,15 @@
   </head>
   <body>
     {% include 'navbar.html' %}
-    <div class="content-wrapper">{% block content %} {% endblock %}</div>
-    {% block footer %}
-    <hr />
-    <p>Footer hecho por Sergio Ortiz Molde</p>
-    {% endblock %}
+    <div class="content-wrapper">
+      <p>Bienvenido al menu principal</p>
+      {% block content%}{% endblock %}
+    </div>
+
+    <div class="footer">
+      {% block footer %}
+      <p>Footer hecho por Sergio Ortiz Molde</p>
+      {% endblock %}
+    </div>
   </body>
 </html>

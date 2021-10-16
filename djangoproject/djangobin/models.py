@@ -1,20 +1,12 @@
 from django.db import models
+from django.db.models.deletion import DO_NOTHING
 from .utils import Preference
 from pygments import lexers, highlight
 from pygments.formatters import HtmlFormatter, ClassNotFound
 from django.shortcuts import reverse
-
-# Create your models here.
-
-class Author(models.Model):
-    name = models.CharField(max_length=100, blank=False)
-    email = models.EmailField(unique=True)
-    active = models.BooleanField(default=False)
-    created_on = models.DateTimeField(auto_now_add=True)
-    last_logged_in = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name + " : " + self.email
+from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 class Language(models.Model):
     name = models.CharField(max_length=100)
@@ -37,6 +29,43 @@ class Language(models.Model):
     class Meta:
         ordering = ['name']
 
+    
+def get_default_language():
+    lang = Language.objects.get_or_create(
+        name='Plain text',
+        lang_code='text',
+        slug='text',
+        mime='text_plain',
+        file_extension='.txt',
+    )
+    return lang[0].id
+
+# Create your models here.
+class Author(models.Model):
+    default_language = models.ForeignKey(Language, on_delete=models.CASCADE,
+                                         default=get_default_language)
+    default_exposure = models.CharField(max_length=10, choices=Preference.exposure_choices,
+                                        default=Preference.SNIPPET_EXPOSURE_PUBLIC)
+    default_expiration = models.CharField(max_length=10, choices=Preference.expiration_choices,
+                                        default=Preference.SNIPPET_EXPIRE_NEVER)
+    private = models.BooleanField(default=False)
+    views = models.IntegerField(default=0)
+    user = models.OneToOneField(User, related_name='profile', on_delete=DO_NOTHING)
+
+    def __str__(self):
+        return self.user.username
+
+    def get_absolute_url(self):
+        return reverse('djangobin:profile', args=[self.user.username])
+
+    def get_snippet_count(self):
+        return self.user.snippet_set.count()
+
+@receiver(post_save, sender=User)
+def create_author(sender, **kwargs):
+    if kwargs.get('created', False):
+        Author.objects.get_or_create(user=kwargs.get('instance'))
+
 class Snippet(models.Model):
     title = models.CharField(max_length=200, blank=True, default="Untitled")
     original_code = models.TextField()
@@ -47,7 +76,7 @@ class Snippet(models.Model):
     slug = models.SlugField()
     created_on = models.DateTimeField(auto_now_add=True)
     language = models.ForeignKey(Language, on_delete=models.CASCADE)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='snippets')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField('Tag', related_name='snippets')
 
     def highlight(self):

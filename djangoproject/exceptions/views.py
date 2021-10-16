@@ -13,7 +13,7 @@ def view_func(request):
     # Redirige a /user/foobar, profile es solo el nombre que le hemos dado en urls.py a la ruta
 
 def view_func1(request):
-    return render(request, '404.html', content_type='application/json', status=404)
+    return render(request, '404.html', status=404)
 
 def view_func2(request):
     return render(request, '400.html', content_type='application/json', status=400)
