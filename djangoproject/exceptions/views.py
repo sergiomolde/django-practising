@@ -12,8 +12,8 @@ def view_func(request):
     # return redirect('profile', 'foobar', permanent=True)
     # Redirige a /user/foobar, profile es solo el nombre que le hemos dado en urls.py a la ruta
 
-def view_func1(request):
-    return render(request, '404.html', status=404)
+def handler404(request):
+    return redirect('djangobin:index.html', permanent=True)
 
 def view_func2(request):
     return render(request, '400.html', content_type='application/json', status=400)

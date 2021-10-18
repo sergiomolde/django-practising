@@ -16,5 +16,7 @@ urlpatterns = [
     path('trending/<language_slug>', views.trending_snippets, name="trending_snippets"),
     path('snippet/<snippet_slug>/', views.snippet_details, name="snippet_detail"),
     path('tag/<tag>/', views.tag_list, name="tag_list"),
-    path('', views.index, name="index")
+    path('add-lang/', views.add_lang, name="add_lang"),
+    path('', views.index, name="index"),
 ]
+handler404 = 'djangobin.views.handler404'

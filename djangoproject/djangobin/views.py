@@ -1,6 +1,8 @@
 from django.http.response import HttpResponseNotFound
-from django.shortcuts import HttpResponse, render
+from django.shortcuts import HttpResponse, render, redirect
+from djangobin.forms import LanguageForm
 from django.conf import settings
+from django.contrib import messages
 import datetime
 import json
 
@@ -65,3 +67,19 @@ def trending_snippets(request, language_slug):
 
 def tag_list(request, tag):
     return HttpResponse('viewing tag #{0}', tag)
+
+def add_lang(request):
+    if request.POST:
+        f = LanguageForm(request.POST)
+        if f.is_valid():
+            lang = f.save()
+            messages.add_message(request, messages.INFO, 'Language creado.')
+            return redirect('add_lang')
+
+    else:
+        f = LanguageForm()
+
+    return render(request, 'add_lang.html', {'form': f} )
+
+def handler404(request, exception, template_name="index.html"):
+    return render(request, template_name)
