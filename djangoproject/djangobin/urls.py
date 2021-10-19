@@ -14,9 +14,12 @@ urlpatterns = [
     # Paths for new models
     path('trending/', views.trending_snippets, name="trending_snippets"),
     path('trending/<language_slug>', views.trending_snippets, name="trending_snippets"),
-    path('snippet/<snippet_slug>/', views.snippet_details, name="snippet_detail"),
     path('tag/<tag>/', views.tag_list, name="tag_list"),
-    path('add-lang/', views.add_lang, name="add_lang"),
+    path('add-snippet/', views.add_snippet, name="add-snippet"),
+    path('<snippet_id>/', views.snippet_details, name="snippet_details"),
+    path('download/<snippet_id>/', views.download_snippet, name='download_snippet'),
+    path('raw/<snippet_id>/', views.raw_snippet, name='raw_snippet'),
+    path('trending/<language_slug>/?page=<page_number>', views.trending_snippets, name="trending_snippets"),
+    path('language-list/', views.language_list, name="language_list"),
     path('', views.index, name="index"),
 ]
-handler404 = 'djangobin.views.handler404'

@@ -25,7 +25,10 @@ from django.conf.urls.static import static
 app_name = 'djangobin'
 
 urlpatterns = [
-    path('', include('djangobin.urls')),
     path('exception/', include('exceptions.urls')),
     path('admin/', admin.site.urls),
-] + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
+    path('', include('djangobin.urls')),
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

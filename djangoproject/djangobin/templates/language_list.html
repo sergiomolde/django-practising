@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}
+  Language List - {{ block.super }} 
+{%endblock %}
+
+{% block content %}
+
+<div style="width:100%; right:0;">
+  <a href="{% url 'add_lang' %}"><button class="btn btn-success"><i class="fa fa-fw fa-plus"></i>Add Language</button></a>
+</div>
+<table id="table" style="margin-top: 10px;">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Language Code</th>
+      <th>Slug</th>
+      <th>Mime</th>
+      <th>File extension</th>
+      <th>Updated On</th>
+      <th>Created On</th>
+      <th colspan="2">Options</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for language in language_list %}
+        <tr>
+          <td>{{language.name}}</td>
+          <td>{{language.lang_code}}</td>
+          <td>{{language.slug}}</td>
+          <td>{{language.mime}}</td>
+          <td>{{language.file_extension}}</td>
+          <td>{{language.updated_on}}</td>
+          <td>{{language.created_on}}</td>
+          <td><button class="btn btn-sm btn-danger"><i class="fa fa-fw fa-trash"></i></button></td>
+          <td><button class="btn btn-sm btn-warning text-white"><i class="fa fa-fw fa-pencil"></i></button></td>  
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

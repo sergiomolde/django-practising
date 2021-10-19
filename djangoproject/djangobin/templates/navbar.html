@@ -1,5 +1,9 @@
 <div class="topnav">
-    <a href="#">Home</a>
-    <a href="#">Blog</a>
-    <a href="/time">Datetime</a>
+    <div id="profile"><a href="#"></a></div>
+    <a href="{% url 'index' %}"><i class="fa fa-fw fa-home"></i>Home</a>
+    <a href="{% url 'language_list' %}"><i class="fa fa-fw fa-book"></i>Language list</a>
+    <a href="{% url 'time' %}"><i class="fa fa-fw fa-moon-o"></i>Datetime</a>
+    <div class="dropdown">
+        <a href="{% url 'add_lang' %}"><i class="fa fa-fw fa-plus"></i>Add Lang</a>
+    </div>
 </div>

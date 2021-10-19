@@ -1,42 +1,40 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import fields
-from django.forms.widgets import Textarea
-from .models import Language
+from .models import Snippet, Language, Author, Tag
+from .utils import Preference, get_current_user
 
-class LanguageForm(forms.ModelForm):
+
+class SnippetForm(forms.ModelForm):
+
+    snippet_tags = forms.CharField(required=False,
+                           widget=forms.TextInput(attrs={
+                               'class': 'selectpicker form-control',
+                               'placeholder': 'Enter tags (optional)'
+                            }))
+
     class Meta:
-        model = Language
-        fields = '__all__'
-        labels = {
-            'mime': 'MIME type',
-            'lang_code': 'Language Code'
-        },
-        help_texts = {
-            'lang_code': 'Short name of the Pygment lexer to use',
-            'file_extension': 'Specify extension like *.txt, *.md etc;'
-        }
+        model = Snippet
+        fields = ('original_code', 'language', 'expiration', 'exposure', 'title',)
         widgets = {
-            'file_extension': Textarea(attrs={'rows': 5, 'cols': 10}),
+            'original_code': forms.Textarea(attrs={'class': 'form-control', 'rows': '10',
+                                                        'spellcheck': 'false'}),
+            'language': forms.Select(attrs={'class': 'selectpicker foo form-control',
+                                            'data-live-search': 'true',
+                                            'data-size': '5'}),
+            'expiration': forms.Select(attrs={'class': 'selectpicker form-control'}),
+            'exposure': forms.Select(attrs={'class': 'selectpicker form-control'}),
+            'title': forms.TextInput(attrs={'class': 'selectpicker form-control',
+                                            'placeholder': 'Enter Title (optional)'}),            
         }
 
-    def clean_name(self):
-        name = self.cleaned_data['name']
-        if name == 'djangobin' or name == 'DJANGOBIN':
-            raise ValidationError("el nombre no puede ser {0}".format(name))
-        return name
-
-    def clean_slug(self):
-        slug = self.cleaned_data['slug'].lower()
-        r = Language.objects.filter(slug=slug)
-        if len(r) > 0:
-            raise ValidationError("{0} ya existe".format(slug))
-        return slug.lower()
-
-    def clean(self):
-        cleaned_data = super(LanguageForm, self).clean()
-        slug = cleaned_data.get('slug')
-        mime = cleaned_data.get('mime')
-        if slug == mime:
-            raise ValidationError("Slug y MIME no pueden ser el mismo.")
-        return cleaned_data
+    def save(self, request):
+        snippet = super(SnippetForm, self).save(commit=False)
+        snippet.user = get_current_user(request)
+        snippet.save()
+        tag_list = [tag.strip().lower() 
+                   for tag in self.cleaned_data['snippet_tags'].split(',') if tag ]
+        if len(tag_list) > 0:
+            for tag in tag_list:
+                t = Tag.objects.get_or_create(name=tag)
+                snippet.tags.add(t[0])
+        return snippet

@@ -1,25 +1,78 @@
-.footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: red;
-    color: white;
-    text-align: center;
+/* Principal content*/
+* {
+    box-sizing: border-box;
 }
 
-body{
+html,
+body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
+
+/* Content wrapper, title, and body css*/
 .content-wrapper {
-    margin: 50px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5em;
+    background-color: #ffffff;
 }
 
+.content {
+    padding-top: 15px;
+    height: 100%;
+}
+
+.content-title {
+    text-align: center;
+    margin: 0 auto;
+    height: 100px;
+    border-bottom: #333 solid 1px;
+}
+
+.content-title h1 {
+    margin: 0;
+    padding-top: 50px;
+}
+
+.content-body {
+    padding-top: 25px;
+    max-width: 850px;
+}
+
+#table {
+    padding-top: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    border: #5472d3 solid 1px;
+}
+
+#table td, #table th {
+    border: 1px, solid #ddd;
+    padding: 8px;
+}
+
+#table tr:hover {
+    background-color: #ddd;
+}
+
+#table th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #5472d3;
+    color: white;
+}
+
+
+
+/* Top navigation content */
 .topnav {
     overflow: hidden;
-    background-color: #333;
+    background-color: #5472d3;
 }
 
 .topnav a {
@@ -39,4 +92,80 @@ body{
 .topnav a.active {
     background-color: #04AA6D;
     color: white;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+#profile {
+    width: 50px;
+    background-color: green;
+}
+
+/* Antes de usar bootstrap para los botones usaba estos estilos predefinidos por mí
+
+.delete-button {
+    background-color: crimson;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+    color: white;
+}
+
+.edit-button {
+    background-color: darkgoldenrod;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.edit-button:hover {
+    background-color: lightyellow;
+    color: black;
+}
+
+.add-button {
+    background-color: green;
+    color: white;
+    width: auto;
+    right: 0;
+    border-radius: 100px;
+    height: 50px;
+    border: none;
+}
+
+.add-button:hover{
+    background-color: lightgreen;
+    color: black;
+}
+
+
+*/
+
+.footer{
+    background-color: #5472d3;
 }

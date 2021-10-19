@@ -20,8 +20,7 @@ class SnippetAdmin(VersionAdmin):
     list_filter = ['created_on']
     date_hierarchy = 'created_on'
     filter_horizontal = ('tags',)
-    fields = ('title', 'original_code', 'hightlight_code', 'expiration', 'exposure',
-                'hits', 'slug', 'language', 'user', 'tags')
+    fields = ('title', 'original_code', 'expiration', 'exposure', 'slug', 'hits', 'language', 'user', 'tags')
 
 class TagAdmin(VersionAdmin):
     list_display = ('name', 'slug')

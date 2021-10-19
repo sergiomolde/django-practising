@@ -7,12 +7,15 @@ from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+import time
+import random
 
 class Language(models.Model):
     name = models.CharField(max_length=100)
     lang_code = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
-    mime = models.CharField(max_length=100, help_text='MIME to use when sending snippet as file.')
+    slug = models.SlugField(max_length=100, unique=True, default=str(time.time()).replace(".", ""))
+    mime = models.CharField(max_length=100)
+    # Se le puede añadir , help_text='MIME to use when sending snippet as file.' para que aparezca como ayuda en el html del formulario
     file_extension = models.CharField(max_length=10)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -24,7 +27,7 @@ class Language(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('djangobin:trending_snippets', args=[self.slug])
+        return reverse('trending_snippets', args=[self.slug])
 
     class Meta:
         ordering = ['name']
@@ -56,7 +59,7 @@ class Author(models.Model):
         return self.user.username
 
     def get_absolute_url(self):
-        return reverse('djangobin:profile', args=[self.user.username])
+        return reverse('profile', args=[self.user.username])
 
     def get_snippet_count(self):
         return self.user.snippet_set.count()
@@ -73,7 +76,8 @@ class Snippet(models.Model):
     expiration = models.CharField(max_length=10, choices=Preference.expiration_choices)
     exposure = models.CharField(max_length=10, choices=Preference.exposure_choices)
     visits = models.IntegerField(default=0)
-    slug = models.SlugField()
+    hits = models.IntegerField(default=0)
+    slug = models.SlugField(default=random.randrange(0, 100000000))
     created_on = models.DateTimeField(auto_now_add=True)
     language = models.ForeignKey(Language, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -87,20 +91,20 @@ class Snippet(models.Model):
         return self.title + ' - ' + self.language.name
 
     def get_absolute_url(self):
-        return reverse('djangobin:trending_snippets', args=[self.slug])
+        return reverse('trending_snippets', args=[self.slug])
 
     class Meta:
         ordering = ['-created_on']
 
 class Tag(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    slug = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, default=str(time.time()).replace(".", ""))
 
     def __str__(self):
         return self.name + " : " + self.slug
 
     def get_absolute_url(self):
-        return reverse('djangobin:trending_snippets', args=[self.slug])
+        return reverse('trending_snippets', args=[self.slug])
     
     class Meta:
         ordering = ['name']
